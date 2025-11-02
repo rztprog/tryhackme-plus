@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_extensionName__",
+  "version": "1",
+  "description": "__MSG_extensionDescription__",
+
+  "icons": {
+    "48": "icons/thmp48.png",
+    "96": "icons/thmp96.png",
+	"128": "icons/thmp128.png"
+  },
+
+  "permissions": [
+    "storage"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.tryhackme.com/*"],
+      "js": ["./src/thmp_min.js"]
+    }
+  ],
+
+  "default_locale": "en",
+
+  "action": {
+    "default_icon":{
+      "48": "icons/thmp48.png",
+      "96": "icons/thmp96.png",
+	  "128": "icons/thmp128.png"
+    },
+    "default_title": "TryHackMe Plus"
+  }
+}
