@@ -7,9 +7,7 @@
 
 <h3 align="center">
   <img src="https://img.shields.io/amo/users/tryhackme-plus?style=flat&logo=firefoxbrowser&label=Firefox%20Users">
-  <!--
-  <img src="https://img.shields.io/chrome-web-store/users/jgomcpcjiffhcbmodgkekfenhhmjphpn?logo=googlechrome&label=Chrome%20Users&color=blue">
-  -->
+  <img src="https://img.shields.io/chrome-web-store/users/anichcaonjnbpkaieplinkklckaancma?logo=googlechrome&label=Chrome%20Users&color=blue">
   <img src="https://img.shields.io/amo/v/tryhackme-plus?style=flat&logo=firefox&label=Version&color=#006d32">
 </h3>
 
@@ -19,9 +17,7 @@
 
 <p align="center">
   <a href="https://addons.mozilla.org/fr/firefox/addon/tryhackme-plus/"><img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png"/></a>
-  <!--
-  <a href="https://chromewebstore.google.com/detail/outlook-web-plus/jgomcpcjiffhcbmodgkekfenhhmjphpn"><img src="https://user-images.githubusercontent.com/585534/107280622-91a8ea80-6a26-11eb-8d07-77c548b28665.png"/></a>
-  -->
+  <a href="https://chromewebstore.google.com/detail/tryhackme-plus/anichcaonjnbpkaieplinkklckaancma"><img src="https://user-images.githubusercontent.com/585534/107280622-91a8ea80-6a26-11eb-8d07-77c548b28665.png"/></a>
 </p>
 
 ## Features
