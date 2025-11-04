@@ -35,7 +35,7 @@
 
 ### Firefox 
 
-Install from [Mozilla Add-ons](https://addons.mozilla.org/fr/firefox/addon/outlook-web-plus/) webpage
+Install from [Mozilla Add-ons](https://addons.mozilla.org/fr/firefox/addon/tryhackme-plus/) webpage
 
 or add the Add-on temporarily:
 1. Download the project
@@ -45,10 +45,10 @@ or add the Add-on temporarily:
 
 ### Google Chrome
 
-Install from [Chrome web store](https://chrome.google.com/webstore/detail/outlook-web-plus) webpage
+Install from [Chrome web store](https://chromewebstore.google.com/detail/tryhackme-plus/anichcaonjnbpkaieplinkklckaancma) webpage
 
 or add the Add-on manually:
-1. Download the folder [google_unpacked](https://github.com/rztprog/outlook-web-plus/tree/main/google_unpacked)
+1. Download the folder [google_unpacked](https://github.com/rztprog/tryhackme-plus/tree/main/google_unpacked)
 3. In Chrome browser go to the Extensions page (or type in url <b>[chrome://extensions/](chrome://extensions/)</b>)
 4. Enable the <b>Developer Mode</b>
 5. Click the <b>Load unpacked</b> button
@@ -56,4 +56,4 @@ or add the Add-on manually:
 
 ## License
 
-[BSD 2-Clause License](https://github.com/rztprog/outlook-web-plus/blob/main/LICENSE)
+[BSD 2-Clause License](https://github.com/rztprog/tryhackme-plus/blob/main/README.md)
