@@ -3,10 +3,12 @@
 const maxAttempts = 50;
 const darkBlueColor = '#151c2b';
 let sticky = true;
+let darkMode = false;
 let activeMachine = null;
 let header1 = null;
 let scrollHandler = null;
 let resizeHandler = null;
+let panelObserverInstance = null;
 
 chrome.storage.local.get(['sticky'], (result) => { 
   if (typeof result.sticky === 'boolean') { 
@@ -176,7 +178,7 @@ const targetMachine = () => {
   }, 200);
 }
 
-const addButton = (targetUrl) => {
+const addButtons = (targetUrl) => {
   // Don't repeat button when click (Guard clause)
 	if (document.querySelector(".lock-scroll-button")) {
 		return;
@@ -193,21 +195,79 @@ const addButton = (targetUrl) => {
           const lastChild = el.lastElementChild;
           if (!lastChild || !lastChild.classList.contains("lock-scroll-button")) {
             const buttonHTML = `
-              <button color="secondary" type="button" role="button" style="border-color: rgb(62, 71, 90);"class="eyZCEe eCoJpk bpvDXh lock-scroll-button" aria-label="lock-scroll-button">
+              <button color="secondary" type="button" role="button" class="lock-scroll-button" aria-label="lock-scroll-button">
+              </button>
+            `;
+
+            const darkButtonHTML = `
+              <button color="secondary" type="button" role="button" class="dark-button" aria-label="dark-button">
               </button>
             `;
 
             const tempDiv = document.createElement("div");
             tempDiv.innerHTML = buttonHTML;
 
+            const tempDarkDiv = document.createElement("div");
+            tempDarkDiv.innerHTML = darkButtonHTML;
+
             const button = tempDiv.firstElementChild;
-            button.innerText = sticky ? "📌" : "🔒";
+            const darkButton = tempDarkDiv.firstElementChild;
+
+            // Base STYLE
+            const baseButtonStyle = {
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: "0.5rem",
+              display: "inline-flex",
+              maxWidth: "100%",
+              fontSize: "1.6rem",
+              gap: "0.6rem",
+              height: "3.6rem",
+              transition: "0.2s ease-in-out",
+              textDecoration: "none",
+              padding: "0.9rem 1.6rem",
+              pointerEvents: "initial",
+              borderWidth: "0.1rem",
+              borderStyle: "solid",
+              backgroundColor: "transparent",
+              borderColor: "rgb(62, 71, 90)",
+              color: "rgb(21, 28, 43)",
+              cursor: "pointer"
+            };
+
+            Object.assign(button.style, baseButtonStyle);
+            Object.assign(darkButton.style, baseButtonStyle);
+
+            // Hover STYLE
+            button.addEventListener("mouseenter", () => {
+              button.style.backgroundColor = "rgb(238, 239, 242)";
+              button.style.borderColor = "rgb(238, 239, 242)";
+            });
+
+            button.addEventListener("mouseleave", () => {
+              button.style.backgroundColor = "transparent";
+              button.style.borderColor = "rgb(62, 71, 90)";
+            });
+
+            darkButton.addEventListener("mouseenter", () => {
+              darkButton.style.backgroundColor = "rgb(238, 239, 242)";
+              darkButton.style.borderColor = "rgb(238, 239, 242)";
+            });
+
+            darkButton.addEventListener("mouseleave", () => {
+              darkButton.style.backgroundColor = "transparent";
+              darkButton.style.borderColor = "rgb(62, 71, 90)";
+            });
+    
+            // Button STYLE
+            button.innerText = sticky ? "📌" : "🔓";
+            darkButton.innerText = "🌙";
             switcher(button, el);
-          
+
             button.addEventListener("click", () => {
               if (button.innerText == "📌") {
                 chrome.storage.local.set({ sticky: false });
-                button.innerText = "🔒";
+                button.innerText = "🔓";
                 sticky = false;
               } else {
                 chrome.storage.local.set({ sticky: true });
@@ -217,7 +277,11 @@ const addButton = (targetUrl) => {
               switcher(button, el);
             });
 
-            el.appendChild(button);
+            darkButton.addEventListener("click", () => {
+              toggleDarkMode()
+            })
+
+            el.append(button, darkButton);
             clearInterval(timer);
             return;
           }
@@ -275,12 +339,14 @@ document.addEventListener("click", (event) => {
 
 // Panel Observer
 const panelObserver = (rightPanel) => {
-  const observer = new MutationObserver((mutations) => {
+  if (panelObserverInstance) return;
+
+  panelObserverInstance = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
       if (mutation.type === 'attributes' && mutation.attributeName === 'data-panel-size') {
         const button = document.querySelector('.lock-scroll-button');
         const el = document.querySelector('[data-sentry-component="RoomBannerActions"]');
-        if (button && el && typeof switcher === 'function') {
+        if (button && el) {
           switcher(button, el);
           targetMachine();
         }
@@ -288,8 +354,8 @@ const panelObserver = (rightPanel) => {
     }
   });
 
-  observer.observe(rightPanel, { attributes: true, attributeFilter: ['data-panel-size'] });
-}
+  panelObserverInstance.observe(rightPanel, {attributes: true,attributeFilter: ['data-panel-size']});
+};
 
 // Right Panel Detector
 const rightPanel = () => {
@@ -316,14 +382,56 @@ const rightPanel = () => {
 document.addEventListener("click", (event) => {
   const link = event.target.closest("a");
   const targetUrl = link ? link.href : null;
-  addButton(targetUrl);
+  addButtons(targetUrl);
   targetMachine();
   rightPanel();
 });
 
 // Direct THM room link
 if (location.href.includes("room")) {
-  addButton(location.href);
+  addButtons(location.href);
   targetMachine();
   rightPanel();
+}
+
+function waitForElement(selector) {
+  return new Promise(resolve => {
+    const el = document.querySelector(selector);
+    if (el) return resolve(el);
+
+    const observer = new MutationObserver(() => {
+      const el = document.querySelector(selector);
+      if (el) {
+        observer.disconnect();
+        resolve(el);
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  });
+}
+
+async function toggleDarkMode() {
+  const btn = document.querySelector('[aria-label="Toggle avatar dropdown"]');
+  if (!btn) return;
+
+  btn.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
+  // console.log("Open");
+
+  const darkBtn = await waitForElement('[aria-label="Toggle dark mode"]');
+
+  // cible le dropdown parent le plus probable
+  const dropdown = darkBtn.closest('[dir="ltr"]');
+
+  if (dropdown) {
+    dropdown.style.display = "none";
+  }
+
+  darkBtn.click();
+
+  btn.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
+  // console.log("Close");
 }
