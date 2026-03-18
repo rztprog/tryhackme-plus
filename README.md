@@ -22,6 +22,7 @@
 
 ## Features
 - ✅ Pin [📌] Button to switch.
+- ✅ Darkmode [🌙] Button.
 - ✅ The Room Banner and the Target Machine stay fixed at the top while you read.
 - ✅ Languages support (English, French, German, Spanish, Russian).
 
