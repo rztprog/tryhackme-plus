@@ -30,7 +30,7 @@
 
 ![Pin Button](https://addons.mozilla.org/user-media/previews/full/339/339373.png?modified=1762042931)
 
-![Fixed to the top](https://addons.mozilla.org/user-media/previews/full/339/339372.png?modified=1762042928)
+![Fixed to the top](https://addons.mozilla.org/user-media/previews/full/339/339588.png)
 
 ## Installation
 
