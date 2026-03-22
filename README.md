@@ -27,10 +27,9 @@
 - ✅ Languages support (English, French, German, Spanish, Russian).
 
 ## Preview
+![Fixed to the top](https://addons.mozilla.org/user-media/previews/full/359/359711.png?modified=1774219724)
 
-![Pin Button](https://addons.mozilla.org/user-media/previews/full/339/339373.png?modified=1762042931)
-
-![Fixed to the top](https://addons.mozilla.org/user-media/previews/full/339/339588.png)
+![Pin Button](https://addons.mozilla.org/user-media/previews/full/359/359710.png?modified=1774219726)
 
 ## Installation
 
