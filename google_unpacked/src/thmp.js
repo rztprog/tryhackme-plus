@@ -192,8 +192,7 @@ const addButtons = (targetUrl) => {
 
         if (el) {
           // console.log('RoomBannerActions detected');
-          const lastChild = el.lastElementChild;
-          if (!lastChild || !lastChild.classList.contains("lock-scroll-button")) {
+          if (!el.querySelector(".lock-scroll-button") && !el.querySelector(".dark-button")) {
             const buttonHTML = `
               <button color="secondary" type="button" role="button" class="lock-scroll-button" aria-label="lock-scroll-button">
               </button>
