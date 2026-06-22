@@ -188,7 +188,7 @@ const addButtons = (targetUrl) => {
     let counter = 0;
 
     const timer = setInterval(() => {
-        const el = document.querySelector('[data-sentry-component="RoomBannerActions"]');
+        const el = document.querySelector('[data-testid="actions"]');
 
         if (el) {
           // console.log('RoomBannerActions detected');
@@ -320,7 +320,7 @@ document.addEventListener("click", (event) => {
         setTimeout(() => {
           console.log("LAUNCH");
           const button = document.querySelector('.lock-scroll-button');
-          const el = document.querySelector('[data-sentry-component="RoomBannerActions"]');
+          const el = document.querySelector('[data-testid="actions"]');
           switcher(button, el);
           targetMachine();
         }, 600);
@@ -345,7 +345,7 @@ const panelObserver = (rightPanel) => {
     for (const mutation of mutations) {
       if (mutation.type === 'attributes' && mutation.attributeName === 'data-panel-size') {
         const button = document.querySelector('.lock-scroll-button');
-        const el = document.querySelector('[data-sentry-component="RoomBannerActions"]');
+        const el = document.querySelector('[data-testid="actions"]');
         if (button && el) {
           switcher(button, el);
           targetMachine();
@@ -394,6 +394,23 @@ if (location.href.includes("room")) {
   rightPanel();
 }
 
+// Click on 'Go te next room' button
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("button");
+
+  if (button?.textContent.trim() === "Go to next room") {
+    window.location.reload();
+    return;
+  }
+
+  const link = event.target.closest("a");
+  const targetUrl = link ? link.href : null;
+
+  addButtons(targetUrl);
+  targetMachine();
+  rightPanel();
+});
+
 function waitForElement(selector) {
   return new Promise(resolve => {
     const el = document.querySelector(selector);
@@ -415,15 +432,16 @@ function waitForElement(selector) {
 }
 
 async function toggleDarkMode() {
+  const splitScreenMiddle = document.getElementById("split-screen-middle");
+  const scrollY = splitScreenMiddle?.scrollTop ?? 0;
+
   const btn = document.querySelector('[aria-label="Toggle avatar dropdown"]');
   if (!btn) return;
 
   btn.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
-  // console.log("Open");
 
   const darkBtn = await waitForElement('[aria-label="Toggle dark mode"]');
 
-  // cible le dropdown parent le plus probable
   const dropdown = darkBtn.closest('[dir="ltr"]');
 
   if (dropdown) {
@@ -433,5 +451,19 @@ async function toggleDarkMode() {
   darkBtn.click();
 
   btn.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
-  // console.log("Close");
+
+  // Restore actual position
+  const restoreScroll = () => {
+    splitScreenMiddle.scrollTop = scrollY;
+  };
+  
+  restoreScroll();
+  
+  requestAnimationFrame(() => {
+    restoreScroll();
+  
+    requestAnimationFrame(() => {
+      restoreScroll();
+    });
+  });
 }
